@@ -1,16 +1,18 @@
 import Express from "express";
-const PORT = 3333;
+import morgan from "morgan";
+import globalRouter from "./routers/globalRouter";
+import videosRouter from "./routers/videosRouter";
+import usersRouter from "./routers/usersRouter";
+import express from "express";
+
+const PORT = 4000;
 const app = Express();
 
-const handleHome = (request, response) => {
-  return response.send("i love u");
-};
-const handleLogin = (request, response) => {
-  response.send("login here");
-};
-app.get("/", handleHome);
-app.get("/login", handleLogin);
+app.set("view engine", "pug");
+app.set("views", process.cwd() + "/src/views");
+app.use(express.urlencoded({ extended: true }));
+app.use("/", globalRouter);
+app.use("/videos", videosRouter);
+app.use("/users", usersRouter);
 
-const handleListening = () =>
-  console.log(`Server listening on port http://localhost:${PORT}`);
-app.listen(PORT, handleListening);
+app.listen(PORT);

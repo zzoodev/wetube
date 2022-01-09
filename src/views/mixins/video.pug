@@ -1,0 +1,8 @@
+mixin video(info)
+    div 
+        h3 
+            a(href=`/videos/${info.id}`)=info.title 
+        ul 
+            li #{info.rating}/5.
+            li #{info.views} views.
+            li Posted #{info.createdAt}.
