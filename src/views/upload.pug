@@ -1,7 +1,12 @@
 extends base
 
 block content   
-   h3 upload video
+    if errorMessage  
+        h3=errorMessage + "!!! "
+    else
+        h3 upload video
     form(method="POST")
-        input(name="title", type="text", placeholders="write video title", required) 
+        input(name="title", type="text", placeholder="write video title", required) 
+        input(name="description", type="text", placeholder="description", required) 
+        input(name="hashtags", type="text", placeholder="hashtags seperated by comma.", required) 
         input(type="submit", name="submit", value="upload video")
