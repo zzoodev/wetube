@@ -2,10 +2,12 @@ import Mongoose from "mongoose";
 import bcrypt from "bcrypt";
 
 const userSchema = new Mongoose.Schema({
-  name: { type: String, required: true },
+  name: String,
+  socialOnly: { type: Boolean, default: false },
+  avartaUrl: String,
   email: { type: String, required: true, unique: true },
   username: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
+  password: String,
   location: String,
 });
 
