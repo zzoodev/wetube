@@ -74,7 +74,7 @@ export const githubLoginFinish = async (req, res) => {
   const config = {
     client_id: process.env.GH_CLIENT,
     client_secret: process.env.GH_SECRET,
-    code: req.query.code,
+    code: req.query.code, // url code
   };
   const params = new URLSearchParams(config).toString();
   const finalUrl = `${baseUrl}?${params}`;
@@ -86,7 +86,6 @@ export const githubLoginFinish = async (req, res) => {
       },
     })
   ).json();
-
   if ("access_token" in tokenRequest) {
     const { access_token } = tokenRequest;
     const apiUrl = "https://api.github.com";
@@ -132,10 +131,51 @@ export const githubLoginFinish = async (req, res) => {
     res.redirect("/login");
   }
 };
+
 export const logout = (req, res) => {
   req.session.destroy();
   return res.redirect("/");
 };
+
+export const getEdit = (req, res) =>
+  res.render("edit-profile", { pagetitle: "Edit profile" });
+
+export const postEdit = async (req, res) => {
+  const {
+    session: {
+      user: { _id },
+    },
+    body: { name, username, location, email },
+  } = req;
+  const exists = await userModel.exists({ $or: [{ username }, { email }] });
+  if (exists) {
+    return res.render("edit-profile", {
+      pagetitle: "Edit profile",
+      errorMessage: "username or email you writed aready existing",
+    });
+  }
+  const updatedUser = await userModel.findByIdAndUpdate(
+    _id,
+    {
+      name,
+      username,
+      location,
+      email,
+    },
+    {
+      new: true,
+    }
+  );
+  req.session.user = updatedUser;
+  res.locals.loggedInUser = updatedUser;
+  return res.render("edit-profile", { pagetitle: "Edit profile" });
+};
+export const getChangePassword = (req, res) =>
+  res.render("change-password", { pagetitle: "Change Password" });
+
+export const postChangePassword = (req, res) => {
+  return res.redirect("/");
+};
+
 export const deleteProfile = (req, res) => res.send("Remove User");
-export const edit = (req, res) => res.send("Edit User");
 export const myProfile = (req, res) => res.send("Its my profile");

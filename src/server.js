@@ -2,7 +2,7 @@ import Express from "express";
 import morgan from "morgan";
 import session from "express-session";
 import MongoStore from "connect-mongo";
-import { locals } from "./locals";
+import { localsMiddleware } from "./middlewares";
 import rootRouter from "./routers/rootRouter";
 import videosRouter from "./routers/videosRouter";
 import usersRouter from "./routers/usersRouter";
@@ -25,7 +25,7 @@ app.use(
   })
 );
 
-app.use(locals);
+app.use(localsMiddleware);
 app.use("/", rootRouter);
 app.use("/videos", videosRouter);
 app.use("/users", usersRouter);
