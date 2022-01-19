@@ -1,10 +1,12 @@
 import userModel from "../models/user";
+import videoModel from "../models/video";
 import Mongoose from "mongoose";
 import fetch from "node-fetch";
 import bcrypt from "bcrypt";
 
 export const getJoin = (req, res) =>
   res.render("creatAccount", { pagetitle: "JOIN" });
+
 export const postJoin = async (req, res) => {
   const { email, username, name, password, password2, location } = req.body;
   if (password !== password2) {
@@ -36,8 +38,10 @@ export const postJoin = async (req, res) => {
     });
   }
 };
-export const getLogin = (req, res) =>
+export const getLogin = (req, res) => {
   res.render("login", { pagetitle: "Login" });
+};
+
 export const postLogin = async (req, res) => {
   const { username, password } = req.body;
   const user = await userModel.findOne({ username, socialOnly: false });
@@ -139,24 +143,25 @@ export const logout = (req, res) => {
 
 export const getEdit = (req, res) =>
   res.render("edit-profile", { pagetitle: "Edit profile" });
-
 export const postEdit = async (req, res) => {
   const {
     session: {
-      user: { _id },
+      user: { _id, avatarUrl },
     },
+    file,
     body: { name, username, location, email },
   } = req;
-  const exists = await userModel.exists({ $or: [{ username }, { email }] });
+  const exists = await userModel.exists({ $and: [{ username }, { email }] });
   if (exists) {
     return res.render("edit-profile", {
       pagetitle: "Edit profile",
-      errorMessage: "username or email you writed aready existing",
+      errorMessage: "username and email you writed aready existing",
     });
   }
   const updatedUser = await userModel.findByIdAndUpdate(
     _id,
     {
+      avatarUrl: file ? file.path : avatarUrl,
       name,
       username,
       location,
@@ -168,14 +173,46 @@ export const postEdit = async (req, res) => {
   );
   req.session.user = updatedUser;
   res.locals.loggedInUser = updatedUser;
+  console.log(req.session);
   return res.render("edit-profile", { pagetitle: "Edit profile" });
 };
 export const getChangePassword = (req, res) =>
   res.render("change-password", { pagetitle: "Change Password" });
 
-export const postChangePassword = (req, res) => {
-  return res.redirect("/");
+export const postChangePassword = async (req, res) => {
+  const {
+    session: {
+      user: { _id, password },
+    },
+    body: { oldPassword, newPassword, newPassword1 },
+  } = req;
+  if (newPassword !== newPassword1) {
+    res.status(400).render("change-password", {
+      pagetitle: "Change Password",
+      errorMessage: "password confirm falsed",
+    });
+  }
+  const ok = await bcrypt.compare(oldPassword, password);
+  if (!ok) {
+    res.status(400).render("change-password", {
+      pagetitle: "Change Password",
+      errorMessage: "existing password incorrect",
+    });
+  }
+  const user = await userModel.findById(_id);
+  user.password = newPassword;
+  req.session.user.password = newPassword;
+  await user.save();
+  return res.redirect("/users/logout");
+};
+
+export const myProfile = async (req, res) => {
+  const { id } = req.params;
+  const user = await userModel.findById(id).populate("video");
+  if (!user) {
+    return res.status(404).render("404", { pagetitle: "User is not found" });
+  }
+  res.render("myProfile", { pagetitle: `${user.username}`, user });
 };
 
 export const deleteProfile = (req, res) => res.send("Remove User");
-export const myProfile = (req, res) => res.send("Its my profile");

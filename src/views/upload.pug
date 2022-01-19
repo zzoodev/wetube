@@ -5,7 +5,8 @@ block content
         h3=errorMessage + "!!! "
     else
         h3 upload video
-    form(method="POST")
+    form(method="POST", enctype="multipart/form-data")
+        input(type="file", name="video", required, accept="video/*")
         input(name="title", type="text", placeholder="write video title", required) 
         input(name="description", type="text", placeholder="description", required) 
         input(name="hashtags", type="text", placeholder="hashtags seperated by comma.", required) 

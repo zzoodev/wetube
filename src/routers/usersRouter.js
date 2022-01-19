@@ -10,7 +10,11 @@ import {
   getChangePassword,
   postChangePassword,
 } from "../controllers/userController";
-import { loggedInOnlyMiddleware, publicOnlyMiddleware } from "../middlewares";
+import {
+  loggedInOnlyMiddleware,
+  publicOnlyMiddleware,
+  avatarUrlUpload,
+} from "../middlewares";
 
 const usersRouter = Express.Router();
 
@@ -21,12 +25,12 @@ usersRouter
   .route("/edit")
   .all(loggedInOnlyMiddleware)
   .get(getEdit)
-  .post(postEdit);
+  .post(avatarUrlUpload.single("avatar"), postEdit);
 usersRouter
   .route("/changePassword")
   .all(loggedInOnlyMiddleware)
   .get(getChangePassword)
   .post(postChangePassword);
-usersRouter.get("/:id(\\d+)", myProfile);
+usersRouter.get("/:id", myProfile);
 usersRouter.get("/delete", deleteProfile);
 export default usersRouter;

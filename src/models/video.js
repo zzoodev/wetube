@@ -9,6 +9,12 @@ const videoSchema = Mongoose.Schema({
     views: { type: Number, default: 0 },
     rating: { type: Number, default: 0 },
   },
+  videoUrl: { type: String, require: true },
+  owner: {
+    type: Mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "userModel",
+  },
 });
 
 videoSchema.static("formatHashtags", function (hashtags) {
