@@ -1,0 +1,121 @@
+@import "../config/_mixins.scss";
+@import "../config/_variables";
+
+section.video_grid {
+  display: grid;
+  position: relative;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-rows: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 40px;
+  padding: 40px;
+  box-sizing: border-box;
+  span.sorry_noting_found {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    text-transform: uppercase;
+    font-size: 24px;
+    color: tomato;
+  }
+} // video_grid
+
+form {
+  @include flex(column, center, flex-start);
+  width: 400px;
+  height: max-content;
+  padding: 20px;
+  box-sizing: border-box;
+  margin: 30px auto;
+  border: 1px solid $gray;
+  border-radius: 5px;
+  h4 {
+    margin-bottom: 10px;
+    color: $lite-gold;
+    font-weight: 600;
+  }
+  .divide_line {
+    width: calc(100% - 5px);
+    height: 0.5px;
+    background-color: #666;
+    margin: 15px 0px 5px 0px;
+  }
+  input {
+    margin: 5px 0px;
+    width: calc(100% - 5px);
+    height: 30px;
+    outline: none;
+    background-color: #222;
+    border: 1px solid $gray;
+    padding: 0px 10px;
+    box-sizing: border-box;
+    line-height: 30px;
+    color: #fff;
+    &.input_file {
+    }
+    &.post_button {
+      font-weight: 600;
+      font-size: 12px;
+      cursor: pointer;
+      background-color: #111;
+      &:hover {
+        color: $lite-gold;
+      }
+    } // input.post_button
+  } // input
+  .update_avatar {
+    @include flex(row, space-between, center);
+    width: 100%;
+    label {
+      background-color: #111;
+      height: 30px;
+      padding: 0px 5px;
+      font-size: 14px;
+      line-height: 30px;
+    }
+    input {
+      width: 65%;
+      margin-right: 10px;
+    }
+  }
+  a.github_login {
+    margin: 15px auto 5px auto;
+    font-size: 14px;
+    font-weight: 600;
+    color: #d9d9d9;
+  }
+  .other_method {
+    margin: 10px auto 5px auto;
+    font-size: 12px;
+    span {
+      color: $gray;
+    }
+    a {
+      color: $lite-blue;
+      margin-left: 5px;
+      font-weight: 600;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  } // other_method
+} // form
+
+.profile_img {
+  @include flex(row, center, center);
+  width: 130px;
+  height: 130px;
+  margin: 0 auto;
+  background-color: #f9f9f9;
+  border-radius: 50%;
+  overflow: hidden;
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  i {
+    font-size: 48px;
+    color: gray;
+  }
+} // profile_img

@@ -1,0 +1,30 @@
+@import "../config/mixins";
+
+form.form_search {
+  all: unset;
+  width: 400px;
+  margin: 0px auto 60px auto;
+  position: relative;
+  display: flex;
+  align-items: space-between;
+  input {
+    all: unset;
+    width: 100%;
+    height: 30px;
+    padding: 5px 10px;
+    border: 1px solid $gray;
+  }
+  button {
+    position: absolute;
+    right: 3%;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    i {
+      color: #fff;
+      font-size: 18px;
+    }
+  }
+}

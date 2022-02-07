@@ -1,0 +1,52 @@
+@import "../config/_mixins.scss";
+@import "../config/_variables";
+
+.watch {
+  @include flex(column, center, center);
+  position: relative;
+  width: 1000px;
+  background-color: #111;
+  margin: 20px auto 0px auto;
+  @include max(1024px) {
+    width: 95%;
+  }
+  video {
+    width: 100%;
+    object-fit: contain;
+    aspect-ratio: 16 / 9;
+  }
+  .videoController {
+    display: none;
+    width: 85%;
+    height: 35px;
+    background-color: #333;
+    border-radius: 10px;
+    padding: 0px 20px;
+    box-sizing: border-box;
+    position: absolute;
+    left: 50%;
+    bottom: 5%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    .checkTime {
+      margin-right: -20px;
+    }
+    i {
+      cursor: pointer;
+      font-size: 18px;
+    }
+    input#timeline {
+      width: 50%;
+    }
+    input#volumn {
+      width: 10%;
+      margin-right: -20px;
+    }
+    #mute i {
+      margin-right: -25px;
+    }
+  } // videoController
+  .showVideoController {
+    @include flex(row, space-between, center);
+  }
+}

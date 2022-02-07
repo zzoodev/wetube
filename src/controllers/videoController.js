@@ -3,7 +3,7 @@ import userModel from "../models/user";
 
 export const home = async (req, res) => {
   try {
-    const videos = await videoModel.find({});
+    const videos = await videoModel.find({}).populate("owner");
     return res.render("home", { pageTitle: "Home", videos });
   } catch {
     return res.send("Server Error");
@@ -101,12 +101,25 @@ export const searchVideo = async (req, res) => {
   const { keyword } = req.query;
   let videos = [];
   if (keyword) {
-    videos = await videoModel.find({
-      title: {
-        $regex: new RegExp(keyword, "i"),
-      },
-    });
+    videos = await videoModel
+      .find({
+        title: {
+          $regex: new RegExp(keyword, "i"),
+        },
+      })
+      .populate("owner");
     return res.render("search", { pageTitle: "Search", videos });
   }
   return res.render("search", { pageTitle: "search", videos });
+};
+
+export const registerView = async (req, res) => {
+  const { id } = req.params;
+  const video = await videoModel.findById(id);
+  if (!video) {
+    res.status(400);
+  }
+  video.meta.views = video.meta.views + 1;
+  video.save();
+  res.status(200);
 };

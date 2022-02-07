@@ -5,7 +5,7 @@ import fetch from "node-fetch";
 import bcrypt from "bcrypt";
 
 export const getJoin = (req, res) =>
-  res.render("creatAccount", { pagetitle: "JOIN" });
+  res.render("creatAccount", { pagetitle: "Create Account" });
 
 export const postJoin = async (req, res) => {
   const { email, username, name, password, password2, location } = req.body;
@@ -208,7 +208,13 @@ export const postChangePassword = async (req, res) => {
 
 export const myProfile = async (req, res) => {
   const { id } = req.params;
-  const user = await userModel.findById(id).populate("video");
+  const user = await userModel.findById(id).populate({
+    path: "videos",
+    populate: {
+      path: "owner",
+      model: "userModel",
+    },
+  });
   if (!user) {
     return res.status(404).render("404", { pagetitle: "User is not found" });
   }

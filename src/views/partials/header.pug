@@ -1,0 +1,28 @@
+header
+    a.logo(href="/")
+        i.fab.fa-youtube
+    nav 
+        ul 
+            if loggedIn
+                li 
+                    a(href="/videos/upload") Upload Video &uarr;
+                li 
+                    a(href="/users/edit") Edit Profile
+                li 
+                    a(href="/users/logout") Logout
+                li 
+                    a(href=`/users/${loggedInUser._id}`)
+                        if loggedInUser.avatarUrl === undefined
+                            i.fas.fa-smile
+                        else 
+                            img.profile_avatar(src="/"+ loggedInUser.avatarUrl)
+                
+            else
+                li 
+                    a(href="/join") Join
+                li 
+                    a(href="/login") Login    
+            li 
+                    a(href="/search") 
+                        i.fas.fa-search
+            

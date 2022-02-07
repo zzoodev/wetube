@@ -1,0 +1,39 @@
+@import "../config/_mixins";
+@import "../config/_variables";
+
+a.video_mixin {
+  @include flex(column, center, flex-start);
+  width: 100%;
+  cursor: pointer;
+  .video_thumnail {
+    display: block;
+    width: 100%;
+    height: 180px;
+    background-color: #fff;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    &:hover {
+      transform: scale(102%);
+      transition: all ease-in-out 0.2s;
+    }
+  } // thumnail
+  .video_data {
+    @include flex(column, center, flex-start);
+    width: 100%;
+    padding: 0px 10px;
+    box-sizing: border-box;
+    h3.video_title {
+      margin: 5px 0px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .video_meta {
+      @include flex(row, space-between, center);
+      width: 100%;
+      span {
+        font-size: 11px;
+        font-weight: 300;
+      }
+    }
+  } // video_data
+} // a.video_mixin

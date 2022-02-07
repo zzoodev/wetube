@@ -9,9 +9,12 @@ module.exports = {
     }),
   ],
   watch: true,
-  entry: "./src/client/js/base.js",
+  entry: {
+    base: "./src/client/js/base.js",
+    videoPlayer: "./src/client/js/videoPlayer.js",
+  },
   output: {
-    filename: "js/base.js",
+    filename: "js/[name].js",
     path: path.resolve(__dirname, "assets"),
     clean: true,
   },

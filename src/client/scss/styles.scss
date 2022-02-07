@@ -1,6 +1,35 @@
-@import "./mixins";
-@import "./variables";
+// config
+@import "./config/_reset.scss";
+@import "./config/_mixins.scss";
+@import "./config/_variables.scss";
 
+// components
+@import "./components/header.scss";
+@import "./components/footer.scss";
+@import "./components/video.scss";
+@import "./components/shared.scss";
+
+// screens
+@import "./screens/home.scss";
+@import "./screens/myprofile.scss";
+@import "./screens/search.scss";
+@import "./screens/watch.scss";
+
+// default
 body {
-  background-color: $base_color;
+  width: 100%;
+  background-color: #333;
+  color: #fff;
+  #wrap {
+    margin: 0 auto;
+    width: 1440px;
+    @include max(1440px) {
+      width: 100%;
+    }
+    main {
+      width: 100%;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+  } // wrap
 }

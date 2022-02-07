@@ -1,0 +1,10 @@
+@import "../config/mixins.scss";
+div.profile {
+  @include flex(column, center, center);
+  margin-bottom: 50px;
+  span.profile_username {
+    font-weight: 600;
+    font-size: 22px;
+    color: #329aef;
+  }
+}

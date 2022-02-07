@@ -2,14 +2,16 @@ extends base
 include mixins/video
 
 block content
-
-    img(src="/" + user.avatarUrl, width="150")
-    br
-    h3=user.username
-    hr
-    nav 
-          ul 
+     div.profile
+          div.profile_img
+               if user.avatarUrl
+                    img(src="/" + user.avatarUrl)
+               else 
+                    i.fas.fa-user
+          br
+          span.profile_username=user.username
+     section.video_grid
                each video in user.videos 
                     +video(video)
                else 
-                    li sorry nothing found
+                    span.sorry_noting_found sorry nothing found

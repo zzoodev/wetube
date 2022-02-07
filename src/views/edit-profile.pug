@@ -3,15 +3,21 @@ extends base.pug
 block content   
     if errorMessage
         span=errorMessage
-    img(src="/" + loggedInUser.avatarUrl, width=100)
+    div.profile_img
+        if loggedInUser.avatarUrl
+            img(src="/" + user.avatarUrl)
+        else 
+            i.fas.fa-user
     form(method="POST",enctype="multipart/form-data")
-        label(for="avatar") Avatar Upload
-        input(type="file", name="avatar", id="avatar", accept="image/*") 
+        h4=pagetitle
+        div.update_avatar
+            label(for="avatar") Update Avatar
+            input(type="file", name="avatar", id="avatar", accept="image/*") 
         input(type="text", name="name", placeholder="Name" required, value=loggedInUser.name)
         input(type="email", name="email", placeholder="Email" required, value=loggedInUser.email)
         input(type="text", name="username", placeholder="Username" required, value=loggedInUser.username)
         input(type="text", name="location", placeholder="Location" required, value=loggedInUser.location)
-        input(type="submit", value="Save") 
+        input.post_button(type="submit", value="Save") 
         if !loggedInUser.socialOnly
             hr
             a(href="changePassword") Change password &rarr; 
