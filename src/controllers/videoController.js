@@ -117,9 +117,9 @@ export const registerView = async (req, res) => {
   const { id } = req.params;
   const video = await videoModel.findById(id);
   if (!video) {
-    res.status(400);
+    res.sendStatus(400);
   }
   video.meta.views = video.meta.views + 1;
   video.save();
-  res.status(200);
+  res.sendStatus(200);
 };

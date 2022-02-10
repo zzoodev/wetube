@@ -1,8 +1,8 @@
 extends base
 
 block content
-    div#videoContainer.watch
-        video(src="/"+ video.videoUrl)
+    div#videoContainer.watch(data-id=video._id)
+        video(src="/"+ video.videoUrl)  
         div.videoController
             span#play 
                 i.fas.fa-play

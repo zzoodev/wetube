@@ -102,9 +102,11 @@ const handleSpaceBar = (event) => {
     handlePlayBtn();
   }
 };
-const handleEnded = (event) => {
-  console.log(event);
+const handleEnded = () => {
+  const { id } = videoContainer.dataset;
+  fetch(`/api/videos/${id}/view`, { method: "POST" });
 };
+
 playBtn.addEventListener("click", handlePlayBtn);
 muteBtn.addEventListener("click", handleMute);
 volumn.addEventListener("input", handleVolumn);
