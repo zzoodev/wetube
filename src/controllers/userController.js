@@ -114,6 +114,7 @@ export const githubLoginFinish = async (req, res) => {
     );
     if (!emailObg) {
       // will set notify
+      req.flash("error", "Not authorized");
       return res.redirect("/login");
     }
     let user = await userModel.findOne({ email: emailObg.email });

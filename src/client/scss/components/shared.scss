@@ -119,3 +119,30 @@ form {
     color: gray;
   }
 } // profile_img
+
+@keyframes flashMessage {
+  from {
+    opacity: 1;
+    top: 20px;
+  }
+  to {
+    opacity: 0;
+    top: -200px;
+  }
+}
+.message {
+  position: absolute;
+  left: 50%;
+  top: 20px;
+  transform: translateX(-50%);
+  max-width: 200px;
+  text-align: center;
+  padding: 10px 20px;
+  background-color: tomato;
+  border-radius: 10px;
+  animation: flashMessage 0.5s ease-in-out 3s forwards;
+  span {
+    color: #222;
+    font-weight: 600;
+  }
+}

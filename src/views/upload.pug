@@ -1,14 +1,17 @@
 extends base
 
 block content   
-    div 
+    div.record_video
         video#recordingVideo
-        button#startRecord Record
+        button#actionBtn Record
     if errorMessage  
         h3=errorMessage + "!!! "
     form.upload_video(method="POST", enctype="multipart/form-data")
         h4=pageTitle
+        label(for="video") video upload
         input.input_file(type="file", name="video", required, accept="video/*")
+        label(for="thumb") thumbnail upload
+        input.input_file(type="file", name="thumb", required, accept="image/*")
         input(name="title", type="text", placeholder="write video title", required) 
         input(name="description", type="text", placeholder="description", required) 
         input(name="hashtags", type="text", placeholder="hashtags seperated by comma.", required) 

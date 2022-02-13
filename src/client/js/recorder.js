@@ -1,30 +1,47 @@
 import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg";
 
-const startBtn = document.getElementById("startRecord");
+const actionBtn = document.getElementById("actionBtn");
 const video = document.getElementById("recordingVideo");
 
 let stream;
 let recorder;
 let videoFile;
 
+const files = {
+  input: "recording.webm",
+  output: "output.mp4",
+  thumbnail: "thumbnail.jpg",
+};
+const downloadFile = (fileUrl, fileName) => {
+  const a = document.createElement("a");
+  a.href = fileUrl;
+  a.download = fileName;
+  document.body.appendChild(a);
+  a.click();
+};
+
 const handleDownload = async () => {
+  actionBtn.innerText = "Transcoding...";
+  actionBtn.disabled = true;
+  actionBtn.removeEventListener("click", handleDownload);
+
   const ffmpeg = createFFmpeg({ log: true });
   await ffmpeg.load();
-  ffmpeg.FS("writeFile", "recording.webm", await fetchFile(videoFile));
+  ffmpeg.FS("writeFile", files.input, await fetchFile(videoFile));
 
-  await ffmpeg.run("-i", "recording.webm", "-r", "60", "output.mp4");
+  await ffmpeg.run("-i", files.input, "-r", "60", files.output);
   await ffmpeg.run(
     "-i",
-    "recording.webm",
+    files.input,
     "-ss",
     "00:00:01",
     "-frames:v",
     "1",
-    "thumbnail.jpg"
+    files.thumbnail
   );
 
-  const mp4File = ffmpeg.FS("readFile", "output.mp4");
-  const thumFile = ffmpeg.FS("readFile", "thumbnail.jpg");
+  const mp4File = ffmpeg.FS("readFile", files.output);
+  const thumFile = ffmpeg.FS("readFile", files.thumbnail);
 
   const mp4Blob = new Blob([mp4File.buffer], { type: "video/mp4" });
   const thumbBlob = new Blob([thumFile.buffer], { type: "image/jpg" });
@@ -32,36 +49,26 @@ const handleDownload = async () => {
   const mp4Url = URL.createObjectURL(mp4Blob);
   const thumUrl = URL.createObjectURL(thumbBlob);
 
-  const a = document.createElement("a");
-  a.href = mp4Url;
-  a.download = "MyRecording.mp4";
-  document.body.appendChild(a);
-  a.click();
+  downloadFile(mp4Url, "MyRecording.mp4");
+  downloadFile(thumUrl, "MyThumbnail.jpg");
 
-  const thumA = document.createElement("a");
-  thumA.href = thumUrl;
-  thumA.download = "MyThumbnail.jpg";
-  document.body.appendChild(thumA);
-  thumA.click();
-  ffmpeg.FS("unlink", "recording.webm");
-  ffmpeg.FS("unlink", "output.mp4");
-  ffmpeg.FS("unlink", "thumbnail.jpg");
+  ffmpeg.FS("unlink", files.input);
+  ffmpeg.FS("unlink", files.output);
+  ffmpeg.FS("unlink", files.thumbnail);
 
   URL.revokeObjectURL(mp4Url);
   URL.revokeObjectURL(thumUrl);
   URL.revokeObjectURL(videoFile);
+
+  actionBtn.innerText = "record";
+  actionBtn.disabled = false;
+  actionBtn.addEventListener("click", handleStart);
 };
 
-const handleStop = () => {
-  startBtn.innerText = "Download";
-  startBtn.removeEventListener("click", handleStop);
-  startBtn.addEventListener("click", handleDownload);
-  recorder.stop();
-};
 const handleStart = () => {
-  startBtn.innerText = "STOP";
-  startBtn.removeEventListener("click", handleStart);
-  startBtn.addEventListener("click", handleStop);
+  actionBtn.innerText = "Recording";
+  actionBtn.disabled = true;
+  actionBtn.removeEventListener("click", handleStart);
   recorder = new MediaRecorder(stream, { mimeType: "video/webm" });
   recorder.ondataavailable = (event) => {
     videoFile = URL.createObjectURL(event.data);
@@ -69,17 +76,26 @@ const handleStart = () => {
     video.src = videoFile;
     video.loop = true;
     video.play();
+    actionBtn.innerText = "Download";
+    actionBtn.disabled = false;
+    actionBtn.addEventListener("click", handleDownload);
   };
   recorder.start();
+  setTimeout(() => {
+    recorder.stop();
+  }, 3000);
 };
 const init = async () => {
   stream = await navigator.mediaDevices.getUserMedia({
     audio: false,
-    video: true,
+    video: {
+      width: 1024,
+      height: 576,
+    },
   });
   video.srcObject = stream;
   video.play();
 };
 init();
 
-startBtn.addEventListener("click", handleStart);
+actionBtn.addEventListener("click", handleStart);

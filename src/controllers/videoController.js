@@ -9,6 +9,7 @@ export const home = async (req, res) => {
     return res.send("Server Error");
   }
 };
+
 export const watch = async (req, res) => {
   const { id } = req.params;
   const video = await videoModel.findById(id).populate("owner");
@@ -20,11 +21,13 @@ export const watch = async (req, res) => {
     video,
   });
 };
+
 export const getEdit = async (req, res) => {
   const { id } = req.params;
   const { _id } = req.session.user;
   const video = await videoModel.findById(id);
   if (String(video.owner) !== String(_id)) {
+    req.flash("error", "Not authorized");
     return res.status(403).redirect("/");
   }
   if (!video) {
@@ -35,6 +38,7 @@ export const getEdit = async (req, res) => {
     video,
   });
 };
+
 export const postEdit = async (req, res) => {
   const { id } = req.params;
   const { _id } = req.session.user;
@@ -53,20 +57,23 @@ export const postEdit = async (req, res) => {
   });
   return res.redirect(`/videos/${id}`);
 };
+
 export const getUpload = (req, res) => {
   return res.render("upload", { pageTitle: "Uploading Video" });
 };
+
 export const postUpload = async (req, res) => {
   const {
     user: { _id },
   } = req.session;
   const { title, description, hashtags } = req.body;
-  const { path: videoUrl } = req.file;
+  const { video, thumb } = req.files;
   try {
     const newVideo = await videoModel.create({
       title,
       description,
-      videoUrl,
+      videoUrl: video[0].path,
+      thumbUrl: thumb[0].path,
       owner: _id,
       hashtags: videoModel.formatHashtags(hashtags),
     });
@@ -88,6 +95,7 @@ export const deleteVideo = async (req, res) => {
   const { id } = req.params;
   const video = await videoModel.findById(id);
   if (String(video.owner) !== String(_id)) {
+    req.flash("error", "Not authorized");
     return res.status(403).redirect("/");
   }
   if (!video) {
