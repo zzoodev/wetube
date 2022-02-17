@@ -50,3 +50,73 @@
     @include flex(row, space-between, center);
   }
 }
+
+.video_info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 300px;
+  margin: 10px auto;
+  .video_meta {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    a.video_owner {
+    }
+    span.video_views {
+    }
+  }
+  .ownerOnly_btn {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 10px;
+    a.edit_video {
+      padding: 5px;
+      color: aquamarine;
+      background-color: #666;
+    }
+    a.delete_video {
+      padding: 5px;
+      color: crimson;
+      background-color: #111;
+    }
+  }
+}
+
+section.commetn_section {
+  form.comment_form {
+    textarea {
+    }
+    button {
+    }
+  }
+}
+
+.video_comments {
+  width: 300px;
+  height: 500px;
+  background-color: #555;
+  border: 1px solid #d9d9d9;
+  border-radius: 5px;
+  overflow: hidden;
+  margin: 0 auto;
+  ul {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 5px 20px;
+    box-sizing: border-box;
+    li {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+      span.video_comment {
+        display: block;
+        color: #fff;
+        text-align: left;
+        margin-top: 10px;
+      }
+    }
+  }
+}

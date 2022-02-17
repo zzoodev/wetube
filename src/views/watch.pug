@@ -16,19 +16,32 @@ block content
             input(type="range" min="0" max="1" step="0.1")#volumn
             span#fullScreenBtn 
                 i.fas.fa-expand
-        //- div 
-        //-     p=video.description
-        //-     small=video.createdAt
-        //-     br
-        //-     small Uploaded by 
-        //-         a(href=`/users/${video.owner._id}`)=video.owner.username 
-        //-     ul 
-        //-         each hashtag in video.hashtags
-        //-             li=hashtag
-        //- if String(video.owner._id) === String(loggedInUser._id)
-        //-     a(href=`${video.id}/edit`) Edit video &rarr; 
-        //-     br
-        //-     a(href=`${video.id}/delete`) Delete video &rarr; 
-    
+
+    div.video_info
+        div.video_meta
+            a.video_owner(href=`/users/${video.owner._id}`)  created by #{video.owner.username}
+            span.video_views views #{video.meta.views} 회
+        if String(video.owner._id) == String(loggedInUser._id)
+            div.ownerOnly_btn
+                a.edit_video(href=`/videos/${video._id}/edit`) Edit Video &rarr;
+                a.delete_video(href=`/videos/${video._id}/delete`) Delete Video &rarr;
+
+
+    if loggedIn
+        section.comment_section
+            form.comment_form#comment_form
+                textarea(cols="30", rows="5", placeholder="write comment..") 
+                button Add comment
+
+    div.video_comments
+        ul 
+            each comment in video.comments.reverse()
+                li(data-id=comment.id)
+                    span.video_comment=comment.text
+                    if String(video.owner._id) == String(loggedInUser._id)
+                        button.removeBtn ❌
+
+
 block scripts
     script(src="/static/js/videoPlayer.js")
+    script(src="/static/js/commentSection.js")

@@ -1,5 +1,7 @@
 import videoModel from "../models/video";
 import userModel from "../models/user";
+import commentModel from "../models/comment";
+import { async } from "regenerator-runtime";
 
 export const home = async (req, res) => {
   try {
@@ -12,7 +14,10 @@ export const home = async (req, res) => {
 
 export const watch = async (req, res) => {
   const { id } = req.params;
-  const video = await videoModel.findById(id).populate("owner");
+  const video = await videoModel
+    .findById(id)
+    .populate("owner")
+    .populate("comments");
   if (!video) {
     return res.status(404).render("404", { pageTitle: "Video not found" });
   }
@@ -130,4 +135,52 @@ export const registerView = async (req, res) => {
   video.meta.views = video.meta.views + 1;
   video.save();
   res.sendStatus(200);
+};
+
+export const createComment = async (req, res) => {
+  const {
+    params: { id },
+    body: { text },
+    session: { user },
+  } = req;
+
+  const video = await videoModel.findById(id);
+  const loggedInUser = await userModel.findById(user._id);
+  if (!video) {
+    return res.sendStatus(404);
+  }
+  const comment = await commentModel.create({
+    text,
+    video: id,
+    owner: user._id,
+  });
+  video.comments.push(comment._id);
+  loggedInUser.comments.push(comment._id);
+  video.save();
+  loggedInUser.save();
+  return res.status(201).json({ newCommentId: comment._id });
+};
+
+export const xComment = async (req, res) => {
+  const {
+    body: { commentId, videoId },
+    session: { user },
+  } = req;
+  const video = await videoModel.findById(videoId);
+  const comment = await commentModel.findById(commentId);
+  const loggedInUser = await userModel.findById(user._id);
+  if (!comment) {
+    req.flash("error", "Not authorized");
+    return res.sendStatus(404);
+  }
+  if (String(comment.owner._id) !== String(user._id)) {
+    req.flash("error", "Not authorized");
+    return res.sendStatus(404);
+  }
+  video.comments.splice(video.comments.indexOf(commentId), 1);
+  loggedInUser.comments.splice(loggedInUser.comments.indexOf(commentId), 1);
+  await video.save();
+  await loggedInUser.save();
+  await commentModel.findByIdAndDelete(commentId);
+  return await res.status(200).json({ removedCommentId: commentId });
 };
