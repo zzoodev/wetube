@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "the best way to watch video",
   "scripts": {
-    "build:server": "babel src/init.js -d build",
+    "build:server": "babel src -d build",
     "dev:server": "nodemon",
     "dev:assets": "webpack"
   },
@@ -30,23 +30,23 @@
     "morgan": "^1.10.0",
     "multer": "^1.4.4",
     "node-fetch": "^2.6.1",
+    "node-modules-regexp": "^1.0.0",
     "pug": "^3.0.2",
-    "regenerator-runtime": "^0.13.9",
-    "webpack": "^5.66.0",
-    "webpack-cli": "^4.9.1"
+    "regenerator-runtime": "^0.13.9"
   },
   "devDependencies": {
     "@babel/cli": "^7.17.3",
     "@babel/core": "^7.17.4",
-    "@babel/node": "^7.16.0",
+    "@babel/node": "^7.16.8",
     "@babel/preset-env": "^7.16.11",
-    "@babel/template": "^7.16.7",
     "babel-loader": "^8.2.3",
     "css-loader": "^6.5.1",
     "mini-css-extract-plugin": "^2.5.2",
     "nodemon": "^2.0.14",
     "sass": "^1.49.0",
     "sass-loader": "^12.4.0",
-    "style-loader": "^3.3.1"
+    "style-loader": "^3.3.1",
+    "webpack": "^5.66.0",
+    "webpack-cli": "^4.9.1"
   }
 }
