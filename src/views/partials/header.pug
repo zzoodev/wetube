@@ -15,8 +15,10 @@ header
                         if loggedInUser.avatarUrl === undefined
                             i.fas.fa-smile
                         else 
-                            img.profile_avatar(src="/"+ loggedInUser.avatarUrl)
-                
+                            if loggedInUser.avatarUrl.includes("github")
+                                img.profile_avatar(src=loggedInUser.avatarUrl)
+                            else 
+                                img.profile_avatar(src="/"+ loggedInUser.avatarUrl)
             else
                 li 
                     a(href="/join") Join
