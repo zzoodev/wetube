@@ -2,7 +2,7 @@ extends base
 
 block content
     div#videoContainer.watch(data-id=video._id)
-        video(src="/"+ video.videoUrl)  
+        video(src=video.videoUrl)  
         div.videoController
             span#play 
                 i.fas.fa-play
@@ -27,7 +27,7 @@ block content
                 a.delete_video(href=`/videos/${video._id}/delete`) Delete Video &rarr;
 
 
-    if loggedIn
+    if loggedInUser
         section.comment_section
             form.comment_form#comment_form
                 textarea(cols="30", rows="5", placeholder="write comment..") 
