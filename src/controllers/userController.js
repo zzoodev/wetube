@@ -159,10 +159,11 @@ export const postEdit = async (req, res) => {
       errorMessage: "username and email you writed aready existing",
     });
   }
+  const isHeroku = process.env.NODE_ENV === "production";
   const updatedUser = await userModel.findByIdAndUpdate(
     _id,
     {
-      avatarUrl: file ? file.location : avatarUrl,
+      avatarUrl: file ? (isHeroku ? file.location : file.path) : avatarUrl,
       name,
       username,
       location,
