@@ -5,7 +5,7 @@ block content
         span=errorMessage
     div.profile_img
         if loggedInUser.avatarUrl
-            img(src="/" + user.avatarUrl)
+            img(src="/" + user.avatarUrl crossorigin)
         else 
             i.fas.fa-user
     form(method="POST",enctype="multipart/form-data")

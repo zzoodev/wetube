@@ -16,9 +16,9 @@ header
                             i.fas.fa-smile
                         else 
                             if loggedInUser.avatarUrl.includes("github")
-                                img.profile_avatar(src=loggedInUser.avatarUrl)
+                                img.profile_avatar(src=loggedInUser.avatarUrl crossorigin)
                             else 
-                                img.profile_avatar(src="/"+ loggedInUser.avatarUrl)
+                                img.profile_avatar(src="/"+ loggedInUser.avatarUrl crossorigin)
             else
                 li 
                     a(href="/join") Join
