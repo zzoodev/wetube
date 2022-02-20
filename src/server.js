@@ -20,11 +20,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use(flash());
-// app.use((req, res, next) => {
-//   res.header("Cross-Origin-Embedder-Policy", "require-corp");
-//   res.header("Cross-Origin-Opener-Policy", "same-origin");
-//   next();
-// });
+app.use((req, res, next) => {
+  res.header("Cross-Origin-Embedder-Policy", "require-corp");
+  res.header("Cross-Origin-Opener-Policy", "same-origin");
+  next();
+});
 app.use(
   session({
     secret: process.env.COOKIE_SECRET,
