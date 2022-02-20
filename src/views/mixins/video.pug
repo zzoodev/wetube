@@ -1,6 +1,7 @@
 mixin video(video)
     a(href=`/videos/${video.id}`).video_mixin
-        div.video_thumnail(style=`background-image:url(${video.thumbUrl}); background-size:cover; background-position:center`)
+        div.video_thumnail
+            img(src=video.thumbUrl crossorigin)
         div.video_data
             h3.video_title=video.title
             div.video_meta

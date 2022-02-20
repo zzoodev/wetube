@@ -6,15 +6,13 @@ a.video_mixin {
   width: 100%;
   cursor: pointer;
   .video_thumnail {
-    display: block;
     width: 100%;
     height: 180px;
-    background-color: #fff;
     border-radius: 5px;
     margin-bottom: 5px;
-    &:hover {
-      transform: scale(102%);
-      transition: all ease-in-out 0.2s;
+    img {
+      display: block;
+      object-fit: cover;
     }
   } // thumnail
   .video_data {
